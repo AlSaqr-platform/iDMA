@@ -22,6 +22,10 @@ module idma_${identifier} #(
   parameter type         reg_rsp_t      = logic,
   /// DMA 1d or ND burst request type
   parameter type         dma_req_t      = logic,
+  /// AXI ID width
+  parameter int unsigned  AxiIdWidth       = 32'd0,
+  /// AXI AxID
+  parameter logic [(AxiIdWidth-1):0] AxID  = 0,
   /// Dependent type for IdCounterWidth
   parameter type         cnt_width_t    = logic [IdCounterWidth-1:0],
   /// Dependent type for StreamWidth
@@ -82,7 +86,6 @@ module idma_${identifier} #(
       dma_ctrl_rsp_o[i]       = dma_ctrl_rsp[i];
       dma_ctrl_rsp_o[i].ready = arb_ready[i];
     end
-
     // valid signals
     logic read_happens;
     always_comb begin : proc_launch
@@ -112,7 +115,7 @@ module idma_${identifier} #(
       arb_dma_req[i]${sep}src_addr = {dma_reg2hw[i].src_addr_high.q, dma_reg2hw[i].src_addr_low.q};
       arb_dma_req[i]${sep}dst_addr = {dma_reg2hw[i].dst_addr_high.q, dma_reg2hw[i].dst_addr_low.q};
 % endif
-
+      arb_dma_req[i].opt.axi_id    = AxID;
       // Current backend only supports incremental burst
       arb_dma_req[i]${sep}opt.src.burst = axi_pkg::BURST_INCR;
       arb_dma_req[i]${sep}opt.dst.burst = axi_pkg::BURST_INCR;
