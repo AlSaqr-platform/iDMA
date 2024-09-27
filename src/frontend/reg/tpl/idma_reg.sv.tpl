@@ -115,7 +115,7 @@ module idma_${identifier} #(
       arb_dma_req[i]${sep}src_addr = {dma_reg2hw[i].src_addr_high.q, dma_reg2hw[i].src_addr_low.q};
       arb_dma_req[i]${sep}dst_addr = {dma_reg2hw[i].dst_addr_high.q, dma_reg2hw[i].dst_addr_low.q};
 % endif
-      arb_dma_req[i].opt.axi_id    = AxID;
+      arb_dma_req[i]${sep}opt.axi_id    = AxID;
       // Current backend only supports incremental burst
       arb_dma_req[i]${sep}opt.src.burst = axi_pkg::BURST_INCR;
       arb_dma_req[i]${sep}opt.dst.burst = axi_pkg::BURST_INCR;
